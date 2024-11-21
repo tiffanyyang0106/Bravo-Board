@@ -1,0 +1,60 @@
+/* main.css */
+
+/* General body styles */
+body {
+  font-family: "Arial", sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+}
+.placeholder-gray::placeholder {
+  color: #b3b3b3; /* Light gray for placeholder */
+  opacity: 1; /* Ensures full visibility of the placeholder */
+}
+
+/* Adjust spacing for containers */
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* Custom styles for search bar */
+.search input {
+  border: 1px solid #ccc;
+  padding: 10px;
+  width: 100%;
+  border-radius: 4px;
+}
+
+/* Goals */
+.goal {
+  margin-top: 20px;
+}
+
+/* Navbar */
+.navbar-container-whole {
+  width: 280px;
+  height: 100vh;
+  background-color: #1a2b48; /* Customized lighter dark blue */
+  color: #e6e6e6; /* Off-white for general text */
+  position: fixed;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+}
+.navbar-header {
+  text-align: center;
+  padding-top: 1rem; /* Matches `py-3` */
+  padding-bottom: 1rem;
+}
+.bravo-board-title {
+  color: white;
+  font-weight: bold; /* Reinforce "fw-bold" */
+  margin-bottom: 0.25rem; /* Matches "mb-1" */
+}
+.navbar-subtitle {
+  color: #b3b3b3; /* Light gray */
+  font-size: 12px; /* Small font size */
+  margin-top: 4px; /* Slight margin above */
+  margin-bottom: 0; /* Remove bottom margin */
+}

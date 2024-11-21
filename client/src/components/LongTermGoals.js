@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import CreateGoalModal from "./CreateGoal";
 
 const LongTermGoalsPage = () => {
+  const [isModalOpen, setModalOpen] = useState(false);
+
   return (
     <div className="long-term-goals">
       <div className="d-flex justify-content-between align-items-center mb-4">
@@ -10,15 +12,17 @@ const LongTermGoalsPage = () => {
         <button
           type="button"
           className="btn btn-primary"
-          data-bs-toggle="modal"
-          data-bs-target="#createGoalModal"
+          onClick={() => setModalOpen(true)}
         >
           + Create Goal
         </button>
       </div>
 
       {/* Modal */}
-      <CreateGoalModal />
+      <CreateGoalModal
+        isOpen={isModalOpen}
+        onClose={() => setModalOpen(false)}
+      />
     </div>
   );
 };

@@ -9,30 +9,11 @@ const NavBar = () => {
   };
 
   return (
-    <div
-      className="d-flex flex-column"
-      style={{
-        width: "280px",
-        height: "100vh",
-        backgroundColor: "#1a2b48", // Customized lighter dark blue
-        color: "#e6e6e6", // Off-white for general text
-        position: "fixed",
-        left: "0",
-      }}
-    >
+    <div className="navbar-container-whole">
       {/* Logo and Centered Title */}
-      <div className="text-center py-3">
-        <h3 className="fw-bold mb-1" style={{ color: "white" }}>
-          BRAVO BOARD
-        </h3>
-        <p
-          className="text small mb-0"
-          style={{
-            color: "#b3b3b3",
-            fontSize: "12px", // Smaller subtitle font size
-            marginTop: "4px",
-          }}
-        >
+      <div className="navbar-header">
+        <h3 className="bravo-board-title">BRAVO BOARD</h3>
+        <p className="navbar-subtitle">
           Your goals, your progress, your applause.
         </p>
       </div>
