@@ -10,7 +10,7 @@ import CalendarPage from "./components/Calendar";
 import CreateGoalModal from "./components/CreateGoal";
 import InboxPage from "./components/Inbox";
 import SearchPage from "./components/Search";
-import DailyHabitsPage from "./components/DailyHabits";
+import DailyHabitsPage from "./components/DailyHabitsPage/DailyHabits";
 import LongTermGoalsPage from "./components/LongTermGoals";
 
 import {

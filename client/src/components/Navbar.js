@@ -104,7 +104,7 @@ const NavBar = () => {
           {[
             {
               name: "Daily Habits",
-              icon: "bi-clipboard-check",
+              icon: "bi-clipboard",
               path: "/daily-habits",
             },
             {

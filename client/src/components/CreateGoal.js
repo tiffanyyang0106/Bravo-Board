@@ -1,7 +1,7 @@
 import React from "react";
 import Modal from "react-modal";
-import { Form, Button } from "react-bootstrap";
 import { useForm } from "react-hook-form";
+import "../styles/CreateGoal.css"; // Ensure this matches your directory structure
 
 // Required for accessibility
 Modal.setAppElement("#root");
@@ -17,25 +17,22 @@ const CreateGoalModal = ({ isOpen, onClose, addGoalHandler }) => {
   // Function to handle goal creation
   const createGoal = async (data) => {
     try {
-      const requestOptions = {
+      const response = await fetch("/api/goals/goals", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          title: data.goalTitle, // Map frontend fields to backend expectations
+          title: data.goalTitle,
           description: data.goalDescription,
-          status: "to do", // Example status field, if required
+          status: "to do", // Default status
         }),
-      };
-
-      const response = await fetch("/api/goals/goals", requestOptions);
+      });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const result = await response.json();
-      console.log("Goal successfully created:", result);
-      addGoalHandler(result); // Add the created goal to the state in DailyHabitsPage
+      addGoalHandler(result); // Add the new goal to the state
       reset(); // Reset the form fields
       onClose(); // Close the modal
     } catch (err) {
@@ -44,9 +41,9 @@ const CreateGoalModal = ({ isOpen, onClose, addGoalHandler }) => {
   };
 
   // Form submission handler
-  const onSubmit = async (data) => {
+  const onSubmit = (data) => {
     if (!data.goalTitle) return;
-    await createGoal(data); // Call createGoal after validation
+    createGoal(data); // Call createGoal after validation
   };
 
   return (
@@ -54,26 +51,14 @@ const CreateGoalModal = ({ isOpen, onClose, addGoalHandler }) => {
       isOpen={isOpen}
       onRequestClose={onClose}
       contentLabel="Create Goal Modal"
-      style={{
-        overlay: { backgroundColor: "rgba(0, 0, 0, 0.5)" },
-        content: {
-          top: "50%",
-          left: "50%",
-          right: "auto",
-          bottom: "auto",
-          marginRight: "-50%",
-          transform: "translate(-50%, -50%)",
-          width: "400px",
-          borderRadius: "10px",
-          padding: "20px",
-        },
-      }}
+      overlayClassName="create-goal-overlay"
+      className="create-goal-modal"
     >
-      <h5>Create New Goal</h5>
-      <Form onSubmit={handleSubmit(onSubmit)}>
-        <Form.Group className="mb-3" controlId="goalTitle">
-          <Form.Label>Your Goal</Form.Label>
-          <Form.Control
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="form-group">
+          <label htmlFor="goalTitle">Your Goal</label>
+          <input
+            id="goalTitle"
             type="text"
             placeholder="Drink more water"
             {...register("goalTitle", {
@@ -90,13 +75,12 @@ const CreateGoalModal = ({ isOpen, onClose, addGoalHandler }) => {
           {errors.goalTitle && (
             <div className="invalid-feedback">{errors.goalTitle.message}</div>
           )}
-        </Form.Group>
+        </div>
 
-        <Form.Group className="mb-3" controlId="goalDescription">
-          <Form.Label>Details</Form.Label>
-          <Form.Control
-            as="textarea"
-            rows={3}
+        <div className="form-group">
+          <label htmlFor="goalDescription">Details</label>
+          <textarea
+            id="goalDescription"
             placeholder="Drink 1 glass of water with each meal"
             {...register("goalDescription", {
               maxLength: {
@@ -113,17 +97,17 @@ const CreateGoalModal = ({ isOpen, onClose, addGoalHandler }) => {
               {errors.goalDescription.message}
             </div>
           )}
-        </Form.Group>
-
-        <div className="d-flex justify-content-end mt-3">
-          <Button variant="secondary" onClick={onClose} className="me-2">
-            Close
-          </Button>
-          <Button variant="primary" type="submit">
-            Add Goal
-          </Button>
         </div>
-      </Form>
+
+        <div className="button-group">
+          <button type="button" className="btn cancel" onClick={onClose}>
+            Close
+          </button>
+          <button type="submit" className="btn save">
+            Add Goal
+          </button>
+        </div>
+      </form>
     </Modal>
   );
 };

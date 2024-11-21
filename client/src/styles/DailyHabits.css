@@ -1,0 +1,332 @@
+/* Layout for the entire daily-habits page */
+.daily-habits {
+  padding: 20px;
+}
+
+/* Header section */
+.daily-habits-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* Title container */
+.daily-habits-title-container {
+  display: flex;
+  align-items: center;
+  gap: 16px; /* Space between elements */
+  position: relative;
+  z-index: 2; /* Stay above background */
+}
+
+.no-tasks {
+  color: #5d5d5d; /* Light gray text */
+  margin-left: 14px;
+  text-align: left; /* Align text to the right */
+  margin-top: 16px; /* Add spacing if needed */
+  font-size: 1rem; /* Slightly smaller font size */
+}
+
+/* Title */
+/* Title with highlight box */
+.daily-habits-title {
+  font-size: 2rem;
+  color: white;
+  margin: 0;
+  position: relative;
+}
+
+.daily-habits-title::before {
+  content: ""; /* Highlight box under the title */
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  right: -8px;
+  bottom: -8px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.daily-habits-title:hover::before {
+  cursor: pointer;
+  opacity: 1; /* Highlight box becomes visible */
+}
+
+.icon-container {
+  position: relative;
+  display: inline-flex; /* Use flex to center icon inside */
+  justify-content: center;
+  align-items: center;
+  width: 36px; /* Set fixed width */
+  height: 36px; /* Make it square */
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.icon-container:hover .icon {
+  color: #ffffff; /* Change icon color on hover */
+}
+
+.icon-container::before {
+  content: ""; /* Create the highlight box */
+  position: absolute;
+  top: -8px; /* Adjust spacing for highlight box */
+  left: -8px;
+  right: -8px;
+  bottom: -8px;
+  background-color: rgba(255, 255, 255, 0.2); /* Transparent white */
+  border-radius: 6px; /* Slightly rounded corners */
+  opacity: 0; /* Invisible by default */
+  transition: opacity 0.3s ease; /* Smooth transition */
+}
+
+.icon-container:hover::before {
+  opacity: 1; /* Highlight box becomes visible */
+}
+
+/* Icons with highlight box */
+.icon {
+  font-size: 1.5rem; /* Base size for icons */
+  color: #e6e6e6;
+  cursor: pointer;
+  position: relative; /* For highlight box positioning */
+  transition: color 0.3s ease;
+}
+
+.icon:hover {
+  color: #ffffff; /* Change color on hover */
+}
+
+.icon::before {
+  content: ""; /* Create the highlight box */
+  position: absolute;
+  top: -8px; /* Adjust spacing for highlight box */
+  left: -8px;
+  right: -8px;
+  bottom: -8px;
+  background-color: rgba(255, 255, 255, 0.2); /* Transparent white */
+  border-radius: 6px; /* Slightly rounded corners */
+  opacity: 0; /* Invisible by default */
+  transition: opacity 0.3s ease; /* Smooth transition */
+}
+
+.icon:hover::before {
+  opacity: 1; /* Highlight box becomes visible */
+}
+
+.clipboard-icon {
+  font-size: 2rem;
+}
+
+/* Star icon states */
+.star-icon {
+  margin-left: 0px; /* Space between the title and the star */
+}
+
+.star-icon.filled {
+  color: #ffc107; /* Filled star color */
+}
+
+.star-icon.empty {
+  color: #e6e6e6; /* Default empty star color */
+}
+
+/* Chevron-specific adjustments */
+.chevron-icon {
+  margin-left: 0px; /* Push the chevron to the far right */
+}
+
+/* Star icon states */
+.star-icon.filled {
+  color: #ffc107; /* Filled star color */
+}
+
+.star-icon.empty {
+  color: #e6e6e6; /* Default empty star color */
+}
+
+.daily-habits-header-bg {
+  background-color: #1e345c; /* Blue background */
+  height: 88px;
+  width: 100%; /* Stretch the background across the page */
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1; /* Place behind the title and button */
+}
+
+.daily-habits-add-goal {
+  background-color: #2a5d91;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  margin-top: -4px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.daily-habits-add-goal:hover {
+  background-color: #204d75;
+}
+
+/* Columns container */
+.daily-habits-columns {
+  display: flex;
+  gap: 12px; /* Space between columns */
+  margin-left: -26px;
+}
+
+/* Individual column styles */
+.column {
+  background-color: #1e1e1e;
+  color: white;
+  border-radius: 10px;
+  padding: 16px;
+  width: 325px;
+  max-height: 400px; /* Set a minimum height */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.column-title {
+  font-size: 1rem;
+  margin-left: 12px;
+  margin-bottom: 10px;
+  text-align: left; /* Align title to the left */
+  color: #e6e6e6;
+  font-weight: bold; /* Make the title bold */
+}
+
+/* Container for goals inside the column */
+.goals-container {
+  display: flex;
+  flex-direction: column; /* Stack goals vertically */
+  gap: 0px; /* Control the spacing between goals */
+}
+
+/* Individual goal styles */
+.goal {
+  background-color: #3a3a3a;
+  border-radius: 8px;
+  margin-top: 12px;
+  padding: 8px 12px;
+  color: white;
+  font-size: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 3px solid rgba(42, 93, 145, 0); /* Faint outline by default */
+  position: relative; /* Make this container relative for positioning */
+  transition: border-color 0.3s ease; /* Smooth transition for outline */
+}
+
+/* Reduce top margin for the first goal */
+.goals-container .goal:first-child {
+  margin-top: 2px; /* Smaller top margin for the first goal */
+}
+
+.goal:hover {
+  border-color: #44a1ff; /* Fully visible outline on hover */
+}
+
+/* Goal header with title and options icon */
+.goal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px; /* Spacing between the header and description */
+}
+
+/* Goal options icon container (ensures clickable area) */
+.goal-options-icon-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px; /* Square clickable area */
+  height: 28px;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+/* White transparent highlight box */
+.goal-options-icon-container::before {
+  content: ""; /* Create the highlight box */
+  position: absolute;
+  top: -6px;
+  left: 6px;
+  right: -6px;
+  bottom: 6px;
+  background-color: rgba(255, 255, 255, 0.2); /* Transparent white */
+  border-radius: 20%; /* Rounded edges */
+  opacity: 0; /* Invisible by default */
+  transition: opacity 0.3s ease; /* Smooth transition */
+}
+
+/* Show highlight box on hover */
+.goal-options-icon-container:hover::before,
+.goal-options-icon-container.active::before {
+  opacity: 1; /* Highlight box becomes visible */
+}
+
+/* Options icon */
+.goal-options-icon {
+  font-size: 1.2rem;
+  margin-top: -14px;
+  margin-right: -12px;
+  color: #e6e6e6;
+  position: relative; /* For proper stacking with the highlight */
+  z-index: 1; /* Ensure icon stays above the highlight box */
+  transition: color 0.3s ease;
+}
+
+.goal-options-icon-container:hover .goal-options-icon,
+.goal-options-icon-container.active .goal-options-icon {
+  color: #ffffff; /* Change icon color on hover or when active */
+}
+
+/* Options Menu */
+.options-menu {
+  position: absolute;
+  top: 36px; /* Adjust position to be below the three dots */
+  right: 12px; /* Align to the right edge */
+  background-color: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 6px;
+  padding: 8px 0;
+  z-index: 1000;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.options-menu-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  color: #e6e6e6;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.options-menu-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+/* Icon for each menu item */
+.options-menu-icon {
+  margin-right: 8px; /* Space between icon and text */
+  font-size: 1.2rem; /* Icon size */
+}
+
+/* Specific hover styles for Confirm Done */
+.options-menu-item.confirm-done:hover {
+  background-color: rgba(0, 128, 0, 0.3); /* Green highlight */
+  color: #00ff00; /* Green text */
+}
+
+/* Specific hover styles for Delete */
+.options-menu-item.delete:hover {
+  background-color: rgba(255, 0, 0, 0.3); /* Red highlight */
+  color: #ff0000; /* Red text */
+}
