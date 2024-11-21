@@ -5,9 +5,8 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./styles/main.css"; // Import your custom styles
 
-import NavBar from "./components/Navbar";
+import NavBar from "./components/Shared/Navbar";
 import CalendarPage from "./components/Calendar";
-import CreateGoalModal from "./components/CreateGoal";
 import InboxPage from "./components/Inbox";
 import SearchPage from "./components/Search";
 import DailyHabitsPage from "./components/DailyHabitsPage/DailyHabits";

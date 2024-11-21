@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import CreateGoalModal from "./CreateGoal";
+import CreateGoalModal from "./Modals/CreateGoal";
 
 const LongTermGoalsPage = () => {
   const [isModalOpen, setModalOpen] = useState(false);

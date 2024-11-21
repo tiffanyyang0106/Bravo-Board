@@ -1,0 +1,111 @@
+/* General Modal Overlay (applies to all modals) */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Transparent gray background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* Ensure it's above other elements */
+}
+
+/* General Modal Content (shared by all modals) */
+.modal-content {
+  background: #1e1e1e;
+  padding: 20px;
+  border-radius: 10px;
+  color: white;
+  max-width: 400px;
+  width: 100%;
+}
+
+/* Modal Titles */
+.modal-content h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  text-align: left; /* Align to the left */
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Modal Descriptions */
+.modal-content p {
+  text-align: left; /* Align text to the left */
+  font-size: 1rem;
+  margin-bottom: 24px; /* Spacing between text and buttons */
+}
+
+/* Form Styling (used in CreateGoal and EditGoal modals) */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #ccc;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #444;
+  background-color: #2e2e2e;
+  color: white;
+}
+
+.form-group textarea {
+  height: 80px;
+}
+
+/* Placeholder Styling */
+.placeholder-gray::placeholder {
+  color: #5b5b5b;
+}
+
+/* Buttons (Shared for all modals) */
+.button-group {
+  display: flex;
+  justify-content: flex-end; /* Align buttons to the right */
+  gap: 16px; /* Add spacing between buttons */
+}
+
+.button-group .btn {
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.button-group .btn.cancel {
+  background-color: #444;
+  color: white;
+}
+
+.button-group .btn.cancel:hover {
+  background-color: #333; /* Darker gray on hover */
+}
+
+.button-group .btn.save {
+  background-color: #2a5d91;
+  color: white;
+}
+
+.button-group .btn.save:hover {
+  background-color: #204d75; /* Darker blue on hover */
+}
+
+.button-group .btn.delete {
+  background-color: #d9534f;
+  color: white;
+}
+
+.button-group .btn.delete:hover {
+  background-color: #c9302c; /* Darker red on hover */
+}

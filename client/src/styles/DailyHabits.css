@@ -223,7 +223,7 @@
 
 /* Reduce top margin for the first goal */
 .goals-container .goal:first-child {
-  margin-top: 2px; /* Smaller top margin for the first goal */
+  margin-top: 6px; /* Smaller top margin for the first goal */
 }
 
 .goal:hover {

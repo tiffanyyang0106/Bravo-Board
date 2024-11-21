@@ -1,40 +1,40 @@
 import React, { useState } from "react";
-import updateGoal from "./api/UpdateGoal"; // Import the updateGoal API function
-import "../styles/EditGoal.css";
+import UpdateGoalAPI from "../../api/UpdateGoalAPI";
+import "../../styles/Modal.css"; // Use shared Modal styles
 
 const EditGoal = ({ isOpen, onClose, goal, onSave }) => {
   const [title, setTitle] = useState(goal.title);
   const [description, setDescription] = useState(goal.description);
-  const [isSaving, setIsSaving] = useState(false); // Optional: Loading state
+  const [isSaving, setIsSaving] = useState(false);
 
   const handleSave = async () => {
     console.log("Initiating handleSave...");
     console.log("Title:", title);
     console.log("Description:", description);
 
-    setIsSaving(true); // Start loading
+    setIsSaving(true);
     const updatedGoal = { title, description };
 
     try {
-      console.log("Calling updateGoal API...");
-      const result = await updateGoal(goal.id, updatedGoal); // Call API
+      console.log("Calling UpdateGoalAPI...");
+      const result = await UpdateGoalAPI(goal.id, updatedGoal);
       console.log("Goal updated successfully:", result);
 
-      onSave(result); // Pass updated goal data to the parent component
-      onClose(); // Close the modal
+      onSave(result);
+      onClose();
     } catch (err) {
       console.error("Failed to update goal:", err);
     } finally {
-      setIsSaving(false); // Stop loading
+      setIsSaving(false);
     }
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="edit-goal-overlay" onClick={onClose}>
+    <div className="modal-overlay" onClick={onClose}>
       <div
-        className="edit-goal-modal"
+        className="modal-content"
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal
       >
         <h3>Edit Goal</h3>

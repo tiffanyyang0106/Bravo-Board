@@ -1,9 +1,9 @@
 import React from "react";
 import Modal from "react-modal";
 import { useForm } from "react-hook-form";
-import "../styles/CreateGoal.css"; // Ensure this matches your directory structure
+import createGoalAPI from "../../api/CreateGoalAPI";
+import "../../styles/Modal.css"; // Use shared Modal styles
 
-// Required for accessibility
 Modal.setAppElement("#root");
 
 const CreateGoalModal = ({ isOpen, onClose, addGoalHandler }) => {
@@ -14,36 +14,17 @@ const CreateGoalModal = ({ isOpen, onClose, addGoalHandler }) => {
     formState: { errors },
   } = useForm();
 
-  // Function to handle goal creation
-  const createGoal = async (data) => {
-    try {
-      const response = await fetch("/api/goals/goals", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title: data.goalTitle,
-          description: data.goalDescription,
-          status: "to do", // Default status
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const result = await response.json();
-      addGoalHandler(result); // Add the new goal to the state
-      reset(); // Reset the form fields
-      onClose(); // Close the modal
-    } catch (err) {
-      console.error("Error creating goal:", err);
-    }
-  };
-
-  // Form submission handler
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     if (!data.goalTitle) return;
-    createGoal(data); // Call createGoal after validation
+
+    try {
+      const newGoal = await createGoalAPI(data);
+      addGoalHandler(newGoal);
+      reset();
+      onClose();
+    } catch (err) {
+      console.error("Failed to create goal:", err);
+    }
   };
 
   return (
@@ -51,8 +32,8 @@ const CreateGoalModal = ({ isOpen, onClose, addGoalHandler }) => {
       isOpen={isOpen}
       onRequestClose={onClose}
       contentLabel="Create Goal Modal"
-      overlayClassName="create-goal-overlay"
-      className="create-goal-modal"
+      overlayClassName="modal-overlay"
+      className="modal-content"
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group">

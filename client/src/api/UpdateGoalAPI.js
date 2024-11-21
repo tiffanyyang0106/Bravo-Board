@@ -1,4 +1,4 @@
-const updateGoal = async (goalId, updatedData) => {
+const UpdateGoalAPI = async (goalId, updatedData) => {
   console.log("Initiating updateGoal...");
   console.log("Goal ID:", goalId); // Log the goal ID
   console.log("Payload being sent:", updatedData); // Log the payload
@@ -35,4 +35,4 @@ const updateGoal = async (goalId, updatedData) => {
   }
 };
 
-export default updateGoal;
+export default UpdateGoalAPI;
