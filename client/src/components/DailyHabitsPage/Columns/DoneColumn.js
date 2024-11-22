@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Scrollbar } from "react-scrollbars-custom";
 import { Droppable, Draggable } from "react-beautiful-dnd";
-import { BiPencil, BiTrash } from "react-icons/bi";
+import { BiPencil, BiUserCheck, BiTrash } from "react-icons/bi";
 import EditGoal from "../../Modals/EditGoal";
 import Card from "../../Shared/Card";
 import deleteGoal from "../../../api/DeleteGoalAPI";
@@ -16,6 +16,7 @@ const DoneColumn = ({ goals, onUpdateGoal, onDeleteGoal }) => {
 
   const options = [
     { name: "Edit", className: "edit", icon: <BiPencil /> },
+    { name: "Confirm Done", className: "confirm-done", icon: <BiUserCheck /> },
     { name: "Delete", className: "delete", icon: <BiTrash /> },
   ];
 

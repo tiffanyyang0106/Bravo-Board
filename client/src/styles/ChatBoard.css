@@ -1,0 +1,139 @@
+.daily-habits {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Full height of the viewport */
+}
+
+.daily-habits-columns {
+  flex: 1; /* Take up the remaining height between header and chat board */
+  display: flex;
+  padding: 0px;
+  gap: 12px; /* Space between columns */
+}
+
+.chat-board {
+  flex: 1;
+  background-color: #1e1e1e; /* Dark background for the chat */
+  color: white; /* Text color */
+  margin-left: -24px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  border-radius: 12px;
+  min-height: 100px; /* Set a minimum height for the chat box */
+  max-height: 400px; /* Optional, prevents it from growing too tall */
+  max-width: 1335px;
+}
+
+.chat-messages {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chat-message {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  max-width: 100%; /* Restrict max width of chat bubbles */
+}
+
+/* Assistant (left-aligned) */
+.chat-message.left {
+  justify-content: flex-start; /* Align assistant's messages to the left */
+  max-width: 90%;
+}
+
+.chat-avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  background-color: #555; /* Grey background for avatar */
+  border-radius: 50%;
+}
+
+.avatar-icon {
+  width: 20px;
+  height: 20px;
+  background-color: white; /* Inner icon color */
+  border-radius: 50%;
+}
+
+.chat-bubble {
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  word-wrap: break-word;
+}
+
+/* Assistant's message bubble */
+.chat-message.left .chat-bubble {
+  background-color: #333; /* Grey bubble for assistant messages */
+  color: white;
+  border-radius: 10px 10px 10px 0; /* Rounded on the left */
+}
+
+/* User (right-aligned) */
+.chat-message.right {
+  justify-content: flex-end; /* Align the entire bubble to the right */
+  width: 100%; /* Make the container span the full width */
+}
+
+.chat-message.right .chat-bubble {
+  background-color: #444; /* Grey bubble for user messages */
+  color: white;
+  text-align: left; /* Ensure text is left-aligned inside the bubble */
+  border-radius: 10px; /* Fully rounded corners */
+  padding: 10px 20px; /* Inner padding for better spacing */
+  width: 100%; /* Bubble width spans from 20% to the right boundary */
+  margin-right: 0; /* Remove extra spacing on the right */
+  max-width: 80%; /* Ensure it doesn't exceed the 80% width of the chat board */
+}
+
+.chat-input-container {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-top: 1px solid #444; /* Subtle divider */
+}
+
+.chat-input {
+  flex: 1;
+  background-color: #313131; /* Slightly lighter black */
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 20px;
+  outline: none;
+  font-size: 0.9rem;
+}
+
+.chat-input::placeholder {
+  color: #777; /* Grey placeholder text */
+}
+
+.send-button {
+  margin-left: 10px;
+  background-color: #555;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  transition: background-color 0.2s;
+}
+
+.send-button:hover {
+  background-color: #777; /* Lighter hover color */
+}

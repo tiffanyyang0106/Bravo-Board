@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { Scrollbar } from "react-scrollbars-custom";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import { BiPencil, BiUserCheck, BiTrash } from "react-icons/bi";
+import fetchOpenAIResponse from "../../../api/OpenAIAPI"; // Import the API function
 import EditGoal from "../../Modals/EditGoal";
 import Card from "../../Shared/Card";
 import deleteGoal from "../../../api/DeleteGoalAPI";
 import DeleteConfirmModal from "../../Modals/DeleteConfirmModal";
 import "../../../styles/DailyHabits.css";
 
-const ToDoColumn = ({ goals, onUpdateGoal, onDeleteGoal }) => {
+const ToDoColumn = ({ goals, onUpdateGoal, onDeleteGoal, onChatResponse }) => {
   const [activeGoalId, setActiveGoalId] = useState(null);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -20,7 +21,7 @@ const ToDoColumn = ({ goals, onUpdateGoal, onDeleteGoal }) => {
     { name: "Delete", className: "delete", icon: <BiTrash /> },
   ];
 
-  const handleOptionClick = (option, goal) => {
+  const handleOptionClick = async (option, goal) => {
     console.log(`Option '${option.name}' selected for goal:`, goal);
 
     if (option.name === "Edit") {
@@ -29,6 +30,17 @@ const ToDoColumn = ({ goals, onUpdateGoal, onDeleteGoal }) => {
     } else if (option.name === "Delete") {
       setSelectedGoal(goal);
       setDeleteModalOpen(true);
+    } else if (option.name === "Confirm Done") {
+      // Mark goal as done
+      const updatedGoal = { ...goal, status: "done" };
+      onUpdateGoal(updatedGoal); // Call the parent to update goals globally
+
+      // Send celebratory message via OpenAI
+      const response = await fetchOpenAIResponse("", goal);
+      console.log("OpenAI Response:", response);
+
+      // Send response to ChatBoard
+      // onChatResponse(response);
     }
 
     setActiveGoalId(null); // Close the menu after selection

@@ -3,7 +3,7 @@ from exts import db
 class Goal(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     title = db.Column(db.String(), nullable=False)
-    description = db.Column(db.Text(), nullable=False)
+    description = db.Column(db.Text(), nullable=True)
     status = db.Column(db.String(), nullable=False, default="to do")
     order = db.Column(db.Integer(), nullable=False, default=0)  # New order field
 

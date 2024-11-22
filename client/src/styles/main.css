@@ -41,6 +41,7 @@ body {
   left: 0;
   display: flex;
   flex-direction: column;
+  z-index: 1000;
 }
 .navbar-header {
   text-align: center;

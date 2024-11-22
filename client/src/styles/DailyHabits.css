@@ -1,6 +1,16 @@
 /* Layout for the entire daily-habits page */
 .daily-habits {
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Full height of the viewport */
+}
+
+.daily-habits-columns {
+  flex: 1; /* Take up the remaining height between header and chat board */
+  display: flex;
+  padding: 0px;
+  gap: 12px; /* Space between columns */
 }
 
 /* Header section */
@@ -151,7 +161,7 @@
 .daily-habits-header-bg {
   background-color: #1e345c; /* Blue background */
   height: 88px;
-  width: 100%; /* Stretch the background across the page */
+  width: 120%; /* Stretch the background across the page */
   position: absolute;
   top: 0;
   left: 0;
@@ -159,6 +169,8 @@
 }
 
 .daily-habits-add-goal {
+  position: fixed;
+  right: 20px;
   background-color: #2a5d91;
   color: white;
   border: none;
@@ -167,6 +179,7 @@
   font-size: 1rem;
   border-radius: 5px;
   cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .daily-habits-add-goal:hover {
