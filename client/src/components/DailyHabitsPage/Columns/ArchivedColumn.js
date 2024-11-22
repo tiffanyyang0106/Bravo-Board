@@ -1,7 +1,16 @@
-import React, { useState } from "react";
+/**
+ * Author: Tiffany Yang
+ * Date: November 21, 2024
+ *
+ * ArchivedColumn Component:
+ * Displays archived goals and provides options to edit or delete goals.
+ * Automatically closes dropdown when clicking outside.
+ */
+
+import React, { useState, useEffect, useRef } from "react";
 import { Scrollbar } from "react-scrollbars-custom";
 import { Droppable, Draggable } from "react-beautiful-dnd";
-import { BiPencil, BiUserCheck, BiTrash } from "react-icons/bi";
+import { BiPencil, BiTrash } from "react-icons/bi";
 import EditGoal from "../../Modals/EditGoal";
 import Card from "../../Shared/Card";
 import deleteGoal from "../../../api/DeleteGoalAPI";
@@ -9,20 +18,21 @@ import DeleteConfirmModal from "../../Modals/DeleteConfirmModal";
 import "../../../styles/DailyHabits.css";
 
 const ArchivedColumn = ({ goals, onUpdateGoal, onDeleteGoal }) => {
-  const [activeGoalId, setActiveGoalId] = useState(null);
+  const [activeGoalId, setActiveGoalId] = useState(null); // ID of the active dropdown
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedGoal, setSelectedGoal] = useState(null);
 
+  const dropdownRef = useRef(null); // Ref for dropdown menu
+
+  // Available options for each goal
   const options = [
     { name: "Edit", className: "edit", icon: <BiPencil /> },
-    { name: "Confirm Done", className: "confirm-done", icon: <BiUserCheck /> },
     { name: "Delete", className: "delete", icon: <BiTrash /> },
   ];
 
+  // Handle option clicks (edit or delete)
   const handleOptionClick = (option, goal) => {
-    console.log(`Option '${option.name}' selected for goal:`, goal);
-
     if (option.name === "Edit") {
       setSelectedGoal(goal);
       setEditModalOpen(true);
@@ -31,28 +41,41 @@ const ArchivedColumn = ({ goals, onUpdateGoal, onDeleteGoal }) => {
       setDeleteModalOpen(true);
     }
 
-    setActiveGoalId(null); // Close the menu after selection
+    setActiveGoalId(null); // Close any active dropdown menu
   };
 
+  // Save updated goal after editing
   const handleSave = (updatedGoal) => {
-    console.log("Saving updated goal:", updatedGoal);
-    onUpdateGoal(updatedGoal); // Call the parent handler to update the goal
+    onUpdateGoal(updatedGoal);
     setEditModalOpen(false);
     setSelectedGoal(null);
   };
 
+  // Delete goal and update state
   const handleDelete = async () => {
     if (!selectedGoal) return;
 
     try {
-      await deleteGoal(selectedGoal.id); // Call API to delete the goal
-      onDeleteGoal(selectedGoal.id); // Update parent state after deletion
+      await deleteGoal(selectedGoal.id);
+      onDeleteGoal(selectedGoal.id);
       setDeleteModalOpen(false);
       setSelectedGoal(null);
     } catch (err) {
       console.error("Failed to delete goal:", err);
     }
   };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setActiveGoalId(null); // Close active dropdown
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <Droppable droppableId="archived">
@@ -78,13 +101,17 @@ const ArchivedColumn = ({ goals, onUpdateGoal, onDeleteGoal }) => {
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
                       >
-                        <Card
-                          goal={goal}
-                          activeGoalId={activeGoalId}
-                          setActiveGoalId={setActiveGoalId}
-                          options={options}
-                          handleOptionClick={handleOptionClick}
-                        />
+                        <div
+                          ref={activeGoalId === goal.id ? dropdownRef : null} // Attach ref to active dropdown
+                        >
+                          <Card
+                            goal={goal}
+                            activeGoalId={activeGoalId}
+                            setActiveGoalId={setActiveGoalId}
+                            options={options}
+                            handleOptionClick={handleOptionClick}
+                          />
+                        </div>
                       </div>
                     )}
                   </Draggable>

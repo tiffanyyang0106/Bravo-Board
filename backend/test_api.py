@@ -1,3 +1,15 @@
+"""
+Author: Tiffany Yang
+Date: November 21, 2024
+
+APITestCase:
+Unit test suite for testing the Flask application's API endpoints.
+- Uses Flask's test client for HTTP requests.
+- Tests CRUD operations on goals (Create, Read, Update, Delete).
+- Ensures database is set up and torn down for each test to maintain isolation.
+"""
+
+
 import unittest
 from main import create_app
 from config import TestConfig

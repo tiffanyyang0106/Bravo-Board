@@ -1,8 +1,17 @@
+/**
+ * Author: Tiffany Yang
+ * Date: November 21, 2024
+ *
+ * CreateGoalModal Component:
+ * Modal for adding new goals. Users can enter a title and optional description for the goal.
+ * Validates input and interacts with the backend to save the new goal.
+ */
+
 import React from "react";
 import Modal from "react-modal";
 import { useForm } from "react-hook-form";
 import createGoalAPI from "../../api/CreateGoalAPI";
-import "../../styles/Modal.css"; // Use shared Modal styles
+import "../../styles/Modal.css"; // Shared Modal styles
 
 Modal.setAppElement("#root");
 
@@ -19,9 +28,9 @@ const CreateGoalModal = ({ isOpen, onClose, addGoalHandler }) => {
 
     try {
       const newGoal = await createGoalAPI(data);
-      addGoalHandler(newGoal);
-      reset();
-      onClose();
+      addGoalHandler(newGoal); // Update parent state with the new goal
+      reset(); // Reset form fields
+      onClose(); // Close modal
     } catch (err) {
       console.error("Failed to create goal:", err);
     }
@@ -36,6 +45,7 @@ const CreateGoalModal = ({ isOpen, onClose, addGoalHandler }) => {
       className="modal-content"
     >
       <form onSubmit={handleSubmit(onSubmit)}>
+        {/* Goal Title Input */}
         <div className="form-group">
           <label htmlFor="goalTitle">Your Goal</label>
           <input
@@ -58,6 +68,7 @@ const CreateGoalModal = ({ isOpen, onClose, addGoalHandler }) => {
           )}
         </div>
 
+        {/* Goal Description Input */}
         <div className="form-group">
           <label htmlFor="goalDescription">Details</label>
           <textarea
@@ -80,6 +91,7 @@ const CreateGoalModal = ({ isOpen, onClose, addGoalHandler }) => {
           )}
         </div>
 
+        {/* Buttons */}
         <div className="button-group">
           <button type="button" className="btn cancel" onClick={onClose}>
             Close

@@ -1,3 +1,12 @@
+/**
+ * Author: Tiffany Yang
+ * Date: November 21, 2024
+ * 
+ * ChatBoard Stylesheet:
+ * Provides layout and styling for the chat board, chat messages,
+ * and input area. Designed for a clean and modern look.
+ */
+
 .daily-habits {
   display: flex;
   flex-direction: column;

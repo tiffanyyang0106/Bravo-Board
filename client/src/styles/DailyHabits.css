@@ -1,3 +1,12 @@
+/**
+ * Author: Tiffany Yang
+ * Date: November 21, 2024
+ * 
+ * DailyHabitsPage Stylesheet:
+ * Provides layout and styling for the Daily Habits page, 
+ * including headers, columns, goals, and interactive elements.
+ */
+
 /* Layout for the entire daily-habits page */
 .daily-habits {
   padding: 20px;

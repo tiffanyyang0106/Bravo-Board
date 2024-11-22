@@ -1,35 +1,38 @@
+/**
+ * Author: Tiffany Yang
+ * Date: November 21, 2024
+ *
+ * EditGoal Component:
+ * Modal for editing an existing goal. Users can update the goal's title and description.
+ * Interacts with the backend to save updates.
+ */
+
 import React, { useState } from "react";
 import UpdateGoalAPI from "../../api/UpdateGoalAPI";
-import "../../styles/Modal.css"; // Use shared Modal styles
+import "../../styles/Modal.css"; // Shared Modal styles
 
 const EditGoal = ({ isOpen, onClose, goal, onSave }) => {
-  const [title, setTitle] = useState(goal.title);
-  const [description, setDescription] = useState(goal.description);
-  const [isSaving, setIsSaving] = useState(false);
+  const [title, setTitle] = useState(goal.title); // Goal title state
+  const [description, setDescription] = useState(goal.description); // Goal description state
+  const [isSaving, setIsSaving] = useState(false); // Tracks save operation status
 
+  // Handle save action
   const handleSave = async () => {
-    console.log("Initiating handleSave...");
-    console.log("Title:", title);
-    console.log("Description:", description);
-
-    setIsSaving(true);
-    const updatedGoal = { title, description };
+    setIsSaving(true); // Indicate saving state
+    const updatedGoal = { title, description }; // Prepare updated goal data
 
     try {
-      console.log("Calling UpdateGoalAPI...");
-      const result = await UpdateGoalAPI(goal.id, updatedGoal);
-      console.log("Goal updated successfully:", result);
-
-      onSave(result);
-      onClose();
+      const result = await UpdateGoalAPI(goal.id, updatedGoal); // Save updates to backend
+      onSave(result); // Update parent state with the updated goal
+      onClose(); // Close modal
     } catch (err) {
       console.error("Failed to update goal:", err);
     } finally {
-      setIsSaving(false);
+      setIsSaving(false); // Reset saving state
     }
   };
 
-  if (!isOpen) return null;
+  if (!isOpen) return null; // Don't render modal if it's not open
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -38,6 +41,8 @@ const EditGoal = ({ isOpen, onClose, goal, onSave }) => {
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal
       >
         <h3>Edit Goal</h3>
+
+        {/* Goal Title Input */}
         <div className="form-group">
           <label htmlFor="goal-title">Your Goal</label>
           <input
@@ -47,6 +52,8 @@ const EditGoal = ({ isOpen, onClose, goal, onSave }) => {
             onChange={(e) => setTitle(e.target.value)}
           />
         </div>
+
+        {/* Goal Description Input */}
         <div className="form-group">
           <label htmlFor="goal-description">Details</label>
           <textarea
@@ -55,6 +62,8 @@ const EditGoal = ({ isOpen, onClose, goal, onSave }) => {
             onChange={(e) => setDescription(e.target.value)}
           />
         </div>
+
+        {/* Buttons */}
         <div className="button-group">
           <button className="btn cancel" onClick={onClose}>
             Cancel

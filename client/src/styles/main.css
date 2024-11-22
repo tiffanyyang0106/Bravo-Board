@@ -1,4 +1,10 @@
-/* main.css */
+/**
+ * Author: Tiffany Yang
+ * Date: November 21, 2024
+ * 
+ * Main.css Stylesheet:
+ * Provides layout and styling for the the general body styles and navbar, 
+ */
 
 /* General body styles */
 body {
@@ -58,4 +64,11 @@ body {
   font-size: 12px; /* Small font size */
   margin-top: 4px; /* Slight margin above */
   margin-bottom: 0; /* Remove bottom margin */
+}
+/* Nav Items */
+.nav-item:hover {
+  background-color: #2a5d91; /* Same as active state */
+  border-radius: 8px;
+  color: white; /* Ensure white text on hover */
+  text-decoration: none; /* No underline on hover */
 }

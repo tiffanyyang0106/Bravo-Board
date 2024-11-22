@@ -1,16 +1,26 @@
+/**
+ * Author: Tiffany Yang
+ * Date: November 21, 2024
+ *
+ * NavBar Component:
+ * Sidebar navigation with links to various sections of the app.
+ * Includes profile information, main navigation, boards, and a premium upgrade link.
+ */
+
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const NavBar = () => {
-  const [activeLink, setActiveLink] = useState("Daily Habits"); // Track active link
+  const [activeLink, setActiveLink] = useState("Daily Habits"); // Track active navigation link
 
+  // Handle navigation link click
   const handleClick = (linkName) => {
-    setActiveLink(linkName); // Update the active link on click
+    setActiveLink(linkName);
   };
 
   return (
     <div className="navbar-container-whole">
-      {/* Logo and Centered Title */}
+      {/* Header Section */}
       <div className="navbar-header">
         <h3 className="bravo-board-title">BRAVO BOARD</h3>
         <p className="navbar-subtitle">
@@ -18,19 +28,11 @@ const NavBar = () => {
         </p>
       </div>
 
-      {/* Subtle Divider */}
-      <div
-        style={{
-          borderBottom: "1px solid #2e3b55",
-          margin: "0 16px",
-        }}
-      ></div>
+      {/* Divider */}
+      <div className="navbar-divider"></div>
 
       {/* User Info Section */}
-      <div
-        className="d-flex align-items-center px-3 my-3"
-        style={{ marginLeft: "12px" }} // Move Tiffany line to the right
-      >
+      <div className="d-flex align-items-center px-3 my-3 user-info">
         <img
           src="/images/tiffany_profile.png"
           alt="User"
@@ -42,18 +44,10 @@ const NavBar = () => {
       </div>
 
       {/* Divider */}
-      <div
-        style={{
-          borderBottom: "1px solid #2e3b55",
-          margin: "0 16px",
-        }}
-      ></div>
+      <div className="navbar-divider"></div>
 
-      {/* Main Navigation */}
-      <ul
-        className="nav nav-pills flex-column px-3"
-        style={{ marginTop: "16px" }} // Add space above the navigation
-      >
+      {/* Main Navigation Links */}
+      <ul className="nav nav-pills flex-column px-3 main-nav">
         {[
           { name: "Search", icon: "bi-search", path: "/search" },
           { name: "Inbox", icon: "bi-inbox", path: "/inbox" },
@@ -66,7 +60,7 @@ const NavBar = () => {
               style={{
                 color: activeLink === item.name ? "white" : "#e6e6e6",
                 backgroundColor:
-                  activeLink === item.name ? "#2a5d91" : "transparent", // Slightly brighter blue
+                  activeLink === item.name ? "#2a5d91" : "transparent",
               }}
               onClick={() => handleClick(item.name)}
             >
@@ -76,7 +70,7 @@ const NavBar = () => {
         ))}
       </ul>
 
-      {/* Increased Space Between Calendar and "Your Boards" */}
+      {/* Spacer Between Sections */}
       <div style={{ height: "40px" }}></div>
 
       {/* Your Boards Section */}
@@ -85,7 +79,7 @@ const NavBar = () => {
           <p
             className="text small mb-0"
             style={{
-              color: "#b3b3b3", // Gray text for "Your Boards"
+              color: "#b3b3b3",
               fontSize: "12px",
             }}
           >
@@ -96,7 +90,7 @@ const NavBar = () => {
             style={{
               cursor: "pointer",
               fontSize: "16px",
-              color: "#e6e6e6", // Off-white for the plus icon
+              color: "#e6e6e6",
             }}
           ></i>
         </div>
@@ -120,7 +114,7 @@ const NavBar = () => {
                 style={{
                   color: activeLink === item.name ? "white" : "#e6e6e6",
                   backgroundColor:
-                    activeLink === item.name ? "#2a5d91" : "transparent", // Slightly brighter blue
+                    activeLink === item.name ? "#2a5d91" : "transparent",
                 }}
                 onClick={() => handleClick(item.name)}
               >
@@ -132,26 +126,17 @@ const NavBar = () => {
       </div>
 
       {/* Divider */}
-      <div
-        style={{
-          borderBottom: "1px solid #2e3b55",
-          margin: "0 16px",
-        }}
-      ></div>
+      <div className="navbar-divider"></div>
 
-      {/* Upgrade to Premium Section */}
-      <div
-        className="px-3 mt-auto"
-        style={{ marginLeft: "16px", marginBottom: "10px" }}
-      >
+      {/* Upgrade to Premium Link */}
+      <div className="px-3 mt-auto premium-upgrade">
         <Link
           to="/premium"
           className="text-decoration-none d-flex align-items-center"
           style={{
             color: activeLink === "Upgrade to Premium" ? "white" : "#e6e6e6",
             backgroundColor:
-              activeLink === "Upgrade to Premium" ? "#2a5d91" : "transparent", // Slightly brighter blue
-            fontSize: "16px",
+              activeLink === "Upgrade to Premium" ? "#2a5d91" : "transparent",
           }}
           onClick={() => handleClick("Upgrade to Premium")}
         >

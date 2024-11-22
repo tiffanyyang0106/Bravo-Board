@@ -2,20 +2,15 @@
  * Author: Tiffany Yang
  * Date: November 21, 2024
  *
- * DailyHabitsPage Component:
- * A central page for managing daily goals organized into columns (To Do, Doing, Done, and Archived).
+ * LongTermGoalsPage Component:
+ * A central page for managing long term goals organized into columns (To Do, Doing, Done, and Archived).
  * Features drag-and-drop functionality, goal creation, editing, and deletion.
  * Integrates with OpenAI for celebratory messages upon goal completion.
  */
 
 import React, { useState, useEffect } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
-import {
-  BiClipboard,
-  BiStar,
-  BiSolidStar,
-  BiChevronDown,
-} from "react-icons/bi";
+import { BiHome, BiStar, BiSolidStar, BiChevronDown } from "react-icons/bi";
 import CreateGoalModal from "../Modals/CreateGoal";
 import ToDoColumn from "./Columns/ToDoColumn";
 import DoingColumn from "./Columns/DoingColumn";
@@ -27,21 +22,20 @@ import fetchOpenAIResponse from "../../api/OpenAIAPI";
 import ChatBoard from "./ChatBoard";
 import "../../styles/DailyHabits.css";
 
-const DailyHabitsPage = () => {
-  // State for managing goals by status
+const LongTermGoalsPage = () => {
+  // State management
   const [goalsByStatus, setGoalsByStatus] = useState({
     "to do": [],
     doing: [],
     done: [],
     archived: [],
   });
+  const [isModalOpen, setModalOpen] = useState(false); // Track goal creation modal visibility
+  const [isFavorite, setIsFavorite] = useState(false); // Track whether the page is marked as favorite
+  const [chatMessages, setChatMessages] = useState([]); // Chat messages for OpenAI responses
+  const [lastCompletedGoal, setLastCompletedGoal] = useState(null); // Tracks the last completed goal
 
-  const [isModalOpen, setModalOpen] = useState(false); // Goal creation modal visibility
-  const [isFavorite, setIsFavorite] = useState(false); // Toggle for favoriting this page
-  const [chatMessages, setChatMessages] = useState([]); // OpenAI celebratory messages
-  const [lastCompletedGoal, setLastCompletedGoal] = useState(null); // Tracks the most recent completed goal
-
-  // Load goals from the backend when the component mounts
+  // Load goals from backend on component mount
   useEffect(() => {
     const loadGoals = async () => {
       try {
@@ -62,7 +56,7 @@ const DailyHabitsPage = () => {
     loadGoals();
   }, []);
 
-  // Fetch celebratory message for completed goals
+  // Fetch celebratory message for the last completed goal
   useEffect(() => {
     const fetchCelebratoryMessage = async () => {
       if (lastCompletedGoal) {
@@ -83,70 +77,75 @@ const DailyHabitsPage = () => {
     fetchCelebratoryMessage();
   }, [lastCompletedGoal]);
 
-  // Handle drag-and-drop actions
+  // Handle drag-and-drop between columns
   const handleDragEnd = async (result) => {
     const { source, destination } = result;
 
+    // If dropped outside of a droppable area, do nothing
+    if (!destination) return;
+
+    // If source and destination are the same, do nothing
     if (
-      !destination ||
-      (source.droppableId === destination.droppableId &&
-        source.index === destination.index)
+      source.droppableId === destination.droppableId &&
+      source.index === destination.index
     ) {
-      return; // Do nothing if dropped outside or in the same position
+      return;
     }
 
     const sourceStatus = source.droppableId;
     const destStatus = destination.droppableId;
 
-    let movedGoal;
+    const sourceGoals = Array.from(goalsByStatus[sourceStatus]);
+    const destGoals =
+      sourceStatus === destStatus
+        ? sourceGoals // Same column
+        : Array.from(goalsByStatus[destStatus]); // Different column
 
-    setGoalsByStatus((prev) => {
-      const updatedGoals = { ...prev };
+    const [movedGoal] = sourceGoals.splice(source.index, 1);
 
-      // Get source and destination goals
-      const sourceGoals = Array.from(updatedGoals[sourceStatus]);
-      const destGoals =
-        sourceStatus === destStatus
-          ? sourceGoals
-          : Array.from(updatedGoals[destStatus]);
-
-      // Move the goal
-      const [movedGoal] = sourceGoals.splice(source.index, 1);
+    // Update the goal's status if moved to a different column
+    if (sourceStatus !== destStatus) {
       movedGoal.status = destStatus;
       destGoals.splice(destination.index, 0, movedGoal);
+    } else {
+      // Reorder within the same column
+      sourceGoals.splice(destination.index, 0, movedGoal);
+    }
 
-      // Update the order in both source and destination
-      updatedGoals[sourceStatus] = sourceGoals.map((goal, index) => ({
+    // Update state with reordered goals
+    const updatedState = {
+      ...goalsByStatus,
+      [sourceStatus]: sourceGoals.map((goal, index) => ({
         ...goal,
         order: index,
-      }));
-      updatedGoals[destStatus] = destGoals.map((goal, index) => ({
+      })),
+      [destStatus]: destGoals.map((goal, index) => ({
         ...goal,
         order: index,
-      }));
+      })),
+    };
 
-      return updatedGoals;
-    });
+    setGoalsByStatus(updatedState);
 
     try {
-      const updatedGoals = Object.values(goalsByStatus).flat();
+      const updatedGoals = Object.values(updatedState).flat();
       const goalOrderPayload = updatedGoals.map((goal, index) => ({
         id: goal.id,
         order: index,
         status: goal.status,
       }));
-
       await UpdateGoalOrderAPI(goalOrderPayload);
 
-      if (destStatus === "done") {
+      // Trigger OpenAI response if moved to "done"
+      if (movedGoal.status === "done") {
         setLastCompletedGoal(movedGoal);
       }
-    } catch (error) {
-      console.error("Failed to update goal order in backend:", error);
+    } catch (err) {
+      console.error("Failed to update goal order in backend:", err);
     }
   };
 
-  // Add a new goal to the appropriate column
+  // Add new goal
   const addGoalHandler = (newGoal) => {
     setGoalsByStatus((prev) => ({
       ...prev,
@@ -154,42 +153,63 @@ const DailyHabitsPage = () => {
     }));
   };
 
-  // Update a goal (e.g., Edit or Confirm Done)
+  // Update goal (e.g., Edit or Confirm Done)
   const onUpdateGoal = (updatedGoal) => {
     setGoalsByStatus((prev) => {
-      const updatedGoals = { ...prev };
+      const newGoalsByStatus = { ...prev };
 
-      // Remove the goal from its current column
-      for (const [status, goals] of Object.entries(updatedGoals)) {
-        const index = goals.findIndex((goal) => goal.id === updatedGoal.id);
-        if (index > -1) {
-          goals.splice(index, 1);
-          break;
-        }
+      // Find the original position of the goal in its current status
+      const currentGoals = newGoalsByStatus[updatedGoal.status];
+      const existingIndex = currentGoals.findIndex(
+        (goal) => goal.id === updatedGoal.id
+      );
+
+      if (existingIndex > -1) {
+        const currentGoal = currentGoals[existingIndex];
+
+        // Update goal fields explicitly, allowing empty strings
+        currentGoals[existingIndex] = {
+          ...currentGoal,
+          title: updatedGoal.title ?? currentGoal.title, // Keep current title if not provided
+          description:
+            updatedGoal.description !== undefined
+              ? updatedGoal.description // Allow empty description
+              : currentGoal.description,
+          status: updatedGoal.status ?? currentGoal.status,
+        };
       }
 
-      // Add the goal to the new status column
-      updatedGoals[updatedGoal.status] = [
-        ...updatedGoals[updatedGoal.status],
-        updatedGoal,
-      ];
+      // If status has changed, move the goal
+      if (updatedGoal.status !== currentGoals[existingIndex]?.status) {
+        newGoalsByStatus[updatedGoal.status] = [
+          ...newGoalsByStatus[updatedGoal.status],
+          {
+            ...updatedGoal,
+            order: newGoalsByStatus[updatedGoal.status].length,
+          },
+        ];
+        newGoalsByStatus[currentGoals[existingIndex]?.status].splice(
+          existingIndex,
+          1
+        );
+      }
 
       if (updatedGoal.status === "done") {
         setLastCompletedGoal(updatedGoal); // Trigger OpenAI response
       }
 
-      return updatedGoals;
+      return newGoalsByStatus;
     });
   };
 
-  // Delete a goal
+  // Delete goal
   const onDeleteGoal = (goalId) => {
     setGoalsByStatus((prev) => {
-      const updatedGoals = {};
+      const newGoalsByStatus = {};
       for (const [status, goals] of Object.entries(prev)) {
-        updatedGoals[status] = goals.filter((goal) => goal.id !== goalId);
+        newGoalsByStatus[status] = goals.filter((goal) => goal.id !== goalId);
       }
-      return updatedGoals;
+      return newGoalsByStatus;
     });
   };
 
@@ -200,9 +220,9 @@ const DailyHabitsPage = () => {
         <div className="daily-habits-header-bg"></div>
         <div className="daily-habits-title-container">
           <div className="icon-container">
-            <BiClipboard className="icon clipboard-icon" />
+            <BiHome className="icon clipboard-icon" />
           </div>
-          <h1 className="daily-habits-title">Daily Habits</h1>
+          <h1 className="daily-habits-title">Long Term Goals</h1>
           <div className="icon-container">
             {isFavorite ? (
               <BiSolidStar
@@ -268,4 +288,4 @@ const DailyHabitsPage = () => {
   );
 };
 
-export default DailyHabitsPage;
+export default LongTermGoalsPage;

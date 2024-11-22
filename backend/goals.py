@@ -1,3 +1,25 @@
+"""
+Author: Tiffany Yang  
+Date: November 21, 2024  
+
+Goals Namespace:  
+This module defines a RESTful API for managing goals using Flask-RESTx.  
+It provides endpoints for creating, retrieving, updating, deleting,  
+and reordering goals.  
+
+Key Features:  
+- `/hello`: A simple hello world endpoint for testing.  
+- `/goals`: Manage all goals (GET all, POST new).  
+- `/goal/<int:id>`: Manage individual goals (GET, PUT, DELETE).  
+- `/order`: Batch update endpoint to reorder and update goal statuses.  
+
+Key Models and Dependencies:  
+- `Goal`: SQLAlchemy model for goals.  
+- `goal_model`: API model for request/response serialization.  
+- `db`: SQLAlchemy database session for operations.  
+"""
+
+
 from flask_restx import Namespace, Resource, fields
 from models import Goal
 from flask import request

@@ -1,11 +1,19 @@
+/**
+ * Author: Tiffany Yang
+ * Date: November 21, 2024
+ *
+ * API to handle updating a goal.
+ */
+
+/**
+ * Sends a PUT request to update a specific goal.
+ *
+ * @param {number} goalId - The ID of the goal to update.
+ * @param {Object} updatedData - Contains the updated goal fields (e.g., title, description).
+ * @returns {Object} - The updated goal data from the backend.
+ * @throws Will throw an error if the request fails.
+ */
 const UpdateGoalAPI = async (goalId, updatedData) => {
-  console.log("Initiating updateGoal...");
-  console.log("Goal ID:", goalId); // Log the goal ID
-  console.log("Payload being sent:", updatedData); // Log the payload
-
-  const token = localStorage.getItem("REACT_TOKEN_AUTH_KEY");
-  console.log("Token retrieved from localStorage:", token);
-
   const requestOptions = {
     method: "PUT",
     headers: {
@@ -15,20 +23,13 @@ const UpdateGoalAPI = async (goalId, updatedData) => {
   };
 
   try {
-    console.log("Sending PUT request to:", `/api/goals/goal/${goalId}`);
-    console.log("Request options:", requestOptions);
-
     const response = await fetch(`/api/goals/goal/${goalId}`, requestOptions);
-    console.log("Response received:", response);
 
     if (!response.ok) {
-      console.error("Failed to update goal. HTTP Status:", response.status);
       throw new Error(`Failed to update goal: ${response.statusText}`);
     }
 
-    const result = await response.json();
-    console.log("Update successful. Server response:", result);
-    return result;
+    return await response.json();
   } catch (err) {
     console.error("Error updating goal:", err);
     throw err;

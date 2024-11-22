@@ -1,10 +1,19 @@
+/**
+ * Author: Tiffany Yang
+ * Date: November 21, 2024
+ *
+ * CalendarPage Component:
+ * Displays a mock calendar with 30 days grouped into weeks.
+ * Provides a visual placeholder for a calendar view, with a highlight on the 15th day (mock event).
+ */
+
 import React from "react";
 
 const CalendarPage = () => {
   const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const dates = Array.from({ length: 30 }, (_, i) => i + 1); // Mock 30 days
+  const dates = Array.from({ length: 30 }, (_, i) => i + 1); // Mock data: 30 days in a month
 
-  // Group dates into rows of 7
+  // Group dates into rows of 7 (for weekly view)
   const groupedDates = [];
   for (let i = 0; i < dates.length; i += 7) {
     groupedDates.push(dates.slice(i, i + 7));
@@ -44,11 +53,12 @@ const CalendarPage = () => {
               style={{
                 width: "14.28%",
                 height: "100px",
-                backgroundColor: date === 15 ? "#e8f4fd" : "#ffffff", // Highlight current day (mock: 15th)
+                backgroundColor: date === 15 ? "#e8f4fd" : "#ffffff", // Highlight 15th (mock current day)
                 borderColor: "#ddd",
-                position: "relative", // For positioning the date
+                position: "relative",
               }}
             >
+              {/* Date */}
               <div
                 style={{
                   position: "absolute",
@@ -60,6 +70,7 @@ const CalendarPage = () => {
               >
                 {date}
               </div>
+              {/* Mock Event */}
               {date === 15 && (
                 <div
                   style={{
@@ -75,7 +86,8 @@ const CalendarPage = () => {
               )}
             </div>
           ))}
-          {/* Fill empty spots in the last row if needed */}
+
+          {/* Fill empty spots in the last row */}
           {week.length < 7 &&
             Array.from({ length: 7 - week.length }).map((_, fillerIndex) => (
               <div
@@ -84,7 +96,7 @@ const CalendarPage = () => {
                 style={{
                   width: "14.28%",
                   height: "100px",
-                  backgroundColor: "#f9f9f9", // Matches the page background
+                  backgroundColor: "#f9f9f9",
                   borderColor: "#ddd",
                 }}
               ></div>

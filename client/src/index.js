@@ -1,3 +1,27 @@
+/**
+ * Author: Tiffany Yang
+ * Date: November 21, 2024
+ *
+ * Application Entry Point:
+ * This module initializes the React application, sets up routing with `react-router-dom`,
+ * and defines the main layout, including the NavBar (sidebar) and the page content area.
+ *
+ * Key Features:
+ * - Integrates Bootstrap for styles and icons.
+ * - Defines routes for the application: Inbox, Calendar, Search, Daily Habits, and Long-Term Goals.
+ * - Redirects the root path (`/`) to the Daily Habits page.
+ * - Uses `React 18`'s `createRoot` for rendering.
+ *
+ * Components:
+ * - `NavBar`: Sidebar navigation.
+ * - `DailyHabitsPage` & `LongTermGoalsPage`: Core pages for managing goals.
+ * - `CalendarPage`, `InboxPage`, `SearchPage`: Additional app functionalities.
+ *
+ * Dependencies:
+ * - `react-router-dom` for routing.
+ * - Bootstrap for UI styling.
+ */
+
 import React from "react";
 import { createRoot } from "react-dom/client"; // Use createRoot for React 18
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -10,7 +34,7 @@ import CalendarPage from "./components/Calendar";
 import InboxPage from "./components/Inbox";
 import SearchPage from "./components/Search";
 import DailyHabitsPage from "./components/DailyHabitsPage/DailyHabits";
-import LongTermGoalsPage from "./components/LongTermGoals";
+import LongTermGoalsPage from "./components/DailyHabitsPage/LongTermGoals";
 
 import {
   BrowserRouter as Router,

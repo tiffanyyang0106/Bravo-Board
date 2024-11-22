@@ -1,7 +1,15 @@
+/**
+ * Author: Tiffany Yang
+ * Date: November 21, 2024
+ *
+ * InboxPage Component:
+ * Displays a list of mock goals in the inbox. Serves as a placeholder for future functionality.
+ */
+
 import React from "react";
 
 const InboxPage = () => {
-  // Mock data for goals
+  // Mock data: List of goals for the inbox
   const goals = [
     "Learn React basics",
     "Complete project setup",
@@ -29,8 +37,8 @@ const InboxPage = () => {
       <div
         className="mx-auto"
         style={{
-          maxWidth: "600px", // Constrain width for minimalistic feel
-          marginTop: "20px",
+          maxWidth: "600px",
+          marginTop: "20px", // Centered with some spacing
         }}
       >
         {goals.length > 0 ? (

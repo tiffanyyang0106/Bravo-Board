@@ -1,6 +1,14 @@
+/**
+ * Author: Tiffany Yang
+ * Date: November 21, 2024
+ *
+ * DeleteConfirmModal Component:
+ * Modal for confirming goal deletion. Provides a confirmation prompt and deletes the goal on user confirmation.
+ */
+
 import React from "react";
 import Modal from "react-modal";
-import "../../styles/Modal.css"; // Use shared Modal styles
+import "../../styles/Modal.css"; // Shared Modal styles
 
 Modal.setAppElement("#root");
 

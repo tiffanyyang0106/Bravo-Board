@@ -1,3 +1,11 @@
+/**
+ * Author: Tiffany Yang
+ * Date: November 21, 2024
+ * 
+ * Modal.css Stylesheet:
+ * Provides layout and styling for the the modals styles
+ */
+
 /* General Modal Overlay (applies to all modals) */
 .modal-overlay {
   position: fixed;

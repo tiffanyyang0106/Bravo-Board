@@ -1,3 +1,13 @@
+"""
+Author: Tiffany Yang  
+Date: November 21, 2024  
+
+Goal Model:  
+This module defines the `Goal` model for the database, representing user goals with attributes such as title, description, status, and order.  
+Includes utility methods for saving, deleting, and updating goals.  
+"""
+
+
 from exts import db
 
 class Goal(db.Model):

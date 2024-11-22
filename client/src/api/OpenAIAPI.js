@@ -1,3 +1,18 @@
+/**
+ * Author: Tiffany Yang
+ * Date: November 21, 2024
+ *
+ * API to handle fetching OpenAI GPT responses.
+ */
+
+/**
+ * Fetches a response from the OpenAI GPT API.
+ *
+ * @param {string} userInput - User input text to process.
+ * @param {Object} [completedGoal] - Optional. If provided, prompts GPT to celebrate the goal.
+ * @returns {string} - GPT-generated response text.
+ * @throws Will throw an error if the request fails.
+ */
 const fetchOpenAIResponse = async (userInput, completedGoal = null) => {
   const API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
   const API_URL = "https://api.openai.com/v1/chat/completions";
@@ -19,14 +34,11 @@ const fetchOpenAIResponse = async (userInput, completedGoal = null) => {
           {
             role: "system",
             content:
-              "You are a very supportive cheerleader for the user's personal goals.",
+              "You are a friendly and supportive cheerleader who encourages and celebrates user achievements.",
           },
-          {
-            role: "user",
-            content: customMessage,
-          },
+          { role: "user", content: customMessage },
         ],
-        max_tokens: 50, // Limit response length
+        max_tokens: 50,
       }),
     });
 

@@ -1,3 +1,19 @@
+"""
+Author: Tiffany Yang  
+Date: November 21, 2024  
+
+Application Factory:  
+This module defines the `create_app` function for initializing and configuring the Flask application.  
+It sets up database integration, RESTful API namespaces, Flask-Migrate for database migrations,  
+CORS for cross-origin requests, and a shell context processor for interactive debugging.  
+
+Key Features:  
+- Configurable app setup using `config`.  
+- RESTful API documentation available at `/docs`.  
+- Middleware to log request information for debugging.  
+"""
+
+
 from flask import Flask
 from flask_restx import Api
 from exts import db

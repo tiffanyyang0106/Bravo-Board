@@ -1,3 +1,12 @@
+/**
+ * Author: Tiffany Yang
+ * Date: November 21, 2024
+ *
+ * SearchPage Component:
+ * Displays a search bar for finding goals or tasks.
+ * Currently a placeholder with no backend integration.
+ */
+
 import React from "react";
 
 const SearchPage = () => {
@@ -10,9 +19,10 @@ const SearchPage = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        paddingTop: "100px", // Positioning the search bar closer to the top
+        paddingTop: "100px", // Space above the search bar
       }}
     >
+      {/* Search Input Group */}
       <div
         className="input-group shadow-sm rounded position-relative"
         style={{
@@ -22,7 +32,6 @@ const SearchPage = () => {
           backgroundColor: "#ffffff",
         }}
       >
-        {/* Search Input */}
         <input
           type="text"
           className="form-control form-control-lg"
@@ -30,24 +39,23 @@ const SearchPage = () => {
           style={{
             border: "none",
             boxShadow: "none",
-            color: "black", // User-entered text
+            color: "black",
             fontSize: "18px",
             paddingLeft: "15px",
             paddingRight: "50px", // Space for the icon button
           }}
         />
-        {/* Search Icon Button */}
         <button
           className="btn"
           style={{
             position: "absolute",
-            right: "10px", // Adjusted for padding consistency
+            right: "10px",
             top: "50%",
-            transform: "translateY(-50%)", // Vertically center the button
+            transform: "translateY(-50%)",
             width: "40px",
             height: "40px",
             border: "none",
-            backgroundColor: "transparent", // Transparent to blend with the input
+            backgroundColor: "transparent",
             cursor: "pointer",
           }}
         >
@@ -55,7 +63,7 @@ const SearchPage = () => {
             className="bi bi-search"
             style={{
               fontSize: "20px",
-              color: "#bbb", // Light gray for the icon
+              color: "#bbb", // Subtle gray for icon
             }}
           ></i>
         </button>

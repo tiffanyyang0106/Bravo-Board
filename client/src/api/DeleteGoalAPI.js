@@ -1,23 +1,32 @@
-// api/DeleteGoalAPI.js
+/**
+ * Author: Tiffany Yang
+ * Date: November 21, 2024
+ *
+ * API to handle deleting goals.
+ */
 
+/**
+ * Deletes a goal by its ID.
+ *
+ * @param {number} goalId - The unique ID of the goal to delete.
+ * @returns {boolean} - Returns true if deletion is successful.
+ * @throws Will throw an error if the request fails.
+ */
 const deleteGoal = async (goalId) => {
-  console.log("Initiating delete for goal ID:", goalId);
-
-  const token = localStorage.getItem("REACT_TOKEN_AUTH_KEY");
   const requestOptions = {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${JSON.parse(token)}`,
     },
   };
 
   try {
     const response = await fetch(`/api/goals/goal/${goalId}`, requestOptions);
+
     if (!response.ok) {
       throw new Error(`Failed to delete goal: ${response.statusText}`);
     }
-    console.log("Goal deleted successfully.");
+
     return true;
   } catch (err) {
     console.error("Error deleting goal:", err);

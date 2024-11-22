@@ -1,10 +1,16 @@
-// api/createGoalAPI.js
+/**
+ * Author: Tiffany Yang
+ * Date: November 21, 2024
+ *
+ * API to handle creating new goals.
+ */
 
 /**
  * Sends a POST request to create a new goal.
  *
- * @param {Object} data - The data for the new goal (title, description, etc.).
- * @returns {Object} - The created goal from the server.
+ * @param {Object} data - Contains the goal title and description.
+ * @returns {Object} - The created goal data from the backend.
+ * @throws Will throw an error if the request fails.
  */
 const CreateGoalAPI = async (data) => {
   try {
@@ -14,7 +20,7 @@ const CreateGoalAPI = async (data) => {
       body: JSON.stringify({
         title: data.goalTitle,
         description: data.goalDescription,
-        status: "to do", // Default status
+        status: "to do", // Default status for new goals
       }),
     });
 
@@ -22,11 +28,10 @@ const CreateGoalAPI = async (data) => {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const result = await response.json();
-    return result; // Return the created goal
+    return await response.json();
   } catch (err) {
     console.error("Error creating goal:", err);
-    throw err; // Re-throw the error to handle it in the caller
+    throw err; // Pass error to the caller
   }
 };
 

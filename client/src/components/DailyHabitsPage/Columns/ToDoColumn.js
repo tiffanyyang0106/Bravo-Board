@@ -1,19 +1,30 @@
-import React, { useState } from "react";
+/**
+ * Author: Tiffany Yang
+ * Date: November 21, 2024
+ *
+ * ToDoColumn Component:
+ * Displays goals that are yet to be started. Provides options to edit, confirm completion, or delete goals.
+ * Automatically closes dropdown when clicking outside.
+ */
+
+import React, { useState, useEffect, useRef } from "react";
 import { Scrollbar } from "react-scrollbars-custom";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import { BiPencil, BiUserCheck, BiTrash } from "react-icons/bi";
-import fetchOpenAIResponse from "../../../api/OpenAIAPI"; // Import the API function
+import fetchOpenAIResponse from "../../../api/OpenAIAPI";
 import EditGoal from "../../Modals/EditGoal";
 import Card from "../../Shared/Card";
 import deleteGoal from "../../../api/DeleteGoalAPI";
 import DeleteConfirmModal from "../../Modals/DeleteConfirmModal";
 import "../../../styles/DailyHabits.css";
 
-const ToDoColumn = ({ goals, onUpdateGoal, onDeleteGoal, onChatResponse }) => {
-  const [activeGoalId, setActiveGoalId] = useState(null);
+const ToDoColumn = ({ goals, onUpdateGoal, onDeleteGoal }) => {
+  const [activeGoalId, setActiveGoalId] = useState(null); // ID of the active dropdown
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedGoal, setSelectedGoal] = useState(null);
+
+  const dropdownRef = useRef(null); // Ref for the dropdown menu
 
   const options = [
     { name: "Edit", className: "edit", icon: <BiPencil /> },
@@ -22,8 +33,6 @@ const ToDoColumn = ({ goals, onUpdateGoal, onDeleteGoal, onChatResponse }) => {
   ];
 
   const handleOptionClick = async (option, goal) => {
-    console.log(`Option '${option.name}' selected for goal:`, goal);
-
     if (option.name === "Edit") {
       setSelectedGoal(goal);
       setEditModalOpen(true);
@@ -31,24 +40,17 @@ const ToDoColumn = ({ goals, onUpdateGoal, onDeleteGoal, onChatResponse }) => {
       setSelectedGoal(goal);
       setDeleteModalOpen(true);
     } else if (option.name === "Confirm Done") {
-      // Mark goal as done
       const updatedGoal = { ...goal, status: "done" };
-      onUpdateGoal(updatedGoal); // Call the parent to update goals globally
-
-      // Send celebratory message via OpenAI
+      onUpdateGoal(updatedGoal);
       const response = await fetchOpenAIResponse("", goal);
       console.log("OpenAI Response:", response);
-
-      // Send response to ChatBoard
-      // onChatResponse(response);
     }
 
-    setActiveGoalId(null); // Close the menu after selection
+    setActiveGoalId(null); // Close dropdown after action
   };
 
   const handleSave = (updatedGoal) => {
-    console.log("Saving updated goal:", updatedGoal);
-    onUpdateGoal(updatedGoal); // Call the parent handler to update the goal
+    onUpdateGoal(updatedGoal);
     setEditModalOpen(false);
     setSelectedGoal(null);
   };
@@ -57,14 +59,26 @@ const ToDoColumn = ({ goals, onUpdateGoal, onDeleteGoal, onChatResponse }) => {
     if (!selectedGoal) return;
 
     try {
-      await deleteGoal(selectedGoal.id); // Call API to delete the goal
-      onDeleteGoal(selectedGoal.id); // Update parent state after deletion
+      await deleteGoal(selectedGoal.id);
+      onDeleteGoal(selectedGoal.id);
       setDeleteModalOpen(false);
       setSelectedGoal(null);
     } catch (err) {
       console.error("Failed to delete goal:", err);
     }
   };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setActiveGoalId(null); // Close dropdown
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <Droppable droppableId="to do">
@@ -74,7 +88,7 @@ const ToDoColumn = ({ goals, onUpdateGoal, onDeleteGoal, onChatResponse }) => {
           {...provided.droppableProps}
           ref={provided.innerRef}
         >
-          <h2 className="column-title">To do</h2>
+          <h2 className="column-title">To Do</h2>
           <Scrollbar style={{ height: 350 }} noScrollX>
             <div className="goals-container">
               {goals.length > 0 ? (
@@ -90,13 +104,17 @@ const ToDoColumn = ({ goals, onUpdateGoal, onDeleteGoal, onChatResponse }) => {
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
                       >
-                        <Card
-                          goal={goal}
-                          activeGoalId={activeGoalId}
-                          setActiveGoalId={setActiveGoalId}
-                          options={options}
-                          handleOptionClick={handleOptionClick}
-                        />
+                        <div
+                          ref={activeGoalId === goal.id ? dropdownRef : null} // Attach ref to the active dropdown
+                        >
+                          <Card
+                            goal={goal}
+                            activeGoalId={activeGoalId}
+                            setActiveGoalId={setActiveGoalId}
+                            options={options}
+                            handleOptionClick={handleOptionClick}
+                          />
+                        </div>
                       </div>
                     )}
                   </Draggable>
@@ -108,7 +126,6 @@ const ToDoColumn = ({ goals, onUpdateGoal, onDeleteGoal, onChatResponse }) => {
             </div>
           </Scrollbar>
 
-          {/* Edit Goal Modal */}
           {selectedGoal && (
             <EditGoal
               isOpen={isEditModalOpen}
@@ -118,7 +135,6 @@ const ToDoColumn = ({ goals, onUpdateGoal, onDeleteGoal, onChatResponse }) => {
             />
           )}
 
-          {/* Delete Confirm Modal */}
           {selectedGoal && (
             <DeleteConfirmModal
               isOpen={isDeleteModalOpen}
